@@ -1,27 +1,13 @@
 import express from 'express';
 import dotenv from "dotenv";
 import cors from 'cors';
-import axios from 'axios';
+import apiMetabase from './src/service/apiMetabase.js';
+import corsOptions from './src/config/corsOptions.js';
 
-dotenv.config();
 const app = express(); // servir requisicoes da api do metabase
-
 app.use(express.json());
-app.use(cors());
-
-const apiMetabase = axios.create({
-    baseURL: process.env.URL_API_METABASE,
-    timeout: 30000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
-
-apiMetabase.interceptors.request.use(config => {
-    config.headers['Content-Type'] = "application/json";
-    config.headers['x-api-key'] = process.env.METABASE_API_KEY;
-    return config;
-});
+app.use(cors(corsOptions));
+dotenv.config();
 
 app.post("/consultar-nome", async (req, res) => {
     const { cpf } = req.body;
