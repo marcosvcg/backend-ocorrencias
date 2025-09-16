@@ -45,4 +45,39 @@ app.post("/consultar-nome", async (req, res) => {
     }
 });
 
+app.post("/visualizar-ocorrencia", async (req, res) => {
+    const { id } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ error: "ID inválido ou ausente" });
+    }
+
+    const body = {
+        ignore_cache: false,
+        collection_preview: false,
+        parameters: [
+            {
+                type: "text",
+                value: id,
+                target: ["variable", ["template-tag", "id"]],
+            },
+        ],
+    };
+
+    try {
+        const response = await apiMetabase.post(`/card/2955/query`, body);
+        
+        const rows = response.data?.data?.rows;
+
+        if (!rows || rows.length === 0) {
+            return res.status(404).json({ error: "Não encontrado" });
+        }
+        return res.json(rows[0]);
+    } catch (error) {
+        return res.status(500).json({ 
+            error: "Erro ao consultar dados"
+        });
+    }
+});
+
 app.listen(process.env.PORT);
