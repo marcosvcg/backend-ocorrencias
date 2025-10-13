@@ -1,4 +1,5 @@
 import { consultarNome, visualizarOcorrencia, obterTramitacao } from '../controller/metabaseFormsController.js';
+import { obterDemandasPorFiltros } from '../controller/metabaseOuvidoriaController.js';
 import express from 'express';
 
 const router = express.Router();
@@ -6,5 +7,8 @@ const router = express.Router();
 router.post('/consultar-nome', consultarNome);
 router.post('/visualizar-ocorrencia', visualizarOcorrencia);
 router.post('/obter-tramitacao', obterTramitacao);
+// =========================================================
+router.post('/obter-demandas', obterDemandasPorFiltros)
+
 
 export default router;
