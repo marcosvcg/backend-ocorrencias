@@ -33,7 +33,9 @@ export const obterDemandasPorFiltros = async (req, res) => {
     if (result.error) {
         return res.status(result.status).json({ error: result.error });
     }
-    return res.json(result.data);
+    return res.json(
+        JSON.parse(result.data)
+    );
 
 };
 
