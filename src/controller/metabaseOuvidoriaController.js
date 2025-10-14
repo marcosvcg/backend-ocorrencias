@@ -21,12 +21,13 @@ export const obterDemandasPorFiltros = async (req, res) => {
         }
     };
 
-    if (setor_id) addParam(setor_id, "setor_id", "number");
-    if (page) addParam(page, "page", "number");
+    if (setor_id) addParam(setor_id, "setor_id", "category");
     if (status) addParam(status, "status", "text");
     if (filtro) addParam(filtro, "filtro", "text");
     if (valor) addParam(valor, "valor", "text");
+    if (page) addParam(page, "page", "number");
     
+    console.log(params[1])
     const result = await consultarCard(3000, params);
 
     if (result.error) {
@@ -36,3 +37,23 @@ export const obterDemandasPorFiltros = async (req, res) => {
 
 };
 
+export const obterSetorIdPorSigla = async (req, res) => {
+    const { orgao_id, setor_sigla } = req.body;
+    const params = [
+        {
+            type: "text",
+            value: orgao_id,
+            target: ["variable", ["template-tag", "orgao_id"]],
+        },
+        {
+            type: "category",
+            value: setor_sigla,
+            target: ["variable", ["template-tag", "setor_sigla"]],
+        }
+    ];
+    const result = await consultarCard(3001, params);
+    if (result.error) {
+        return res.status(result.status).json({ error: result.error });
+    }
+    return res.json(result.data[0]);
+};
