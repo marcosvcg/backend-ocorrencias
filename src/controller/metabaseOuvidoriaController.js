@@ -26,8 +26,7 @@ export const obterDemandasPorFiltros = async (req, res) => {
     if (filtro) addParam(filtro, "filtro", "text");
     if (valor) addParam(valor, "valor", "text");
     if (page) addParam(page, "page", "number");
-    
-    console.log(params[1])
+
     const result = await consultarCard(3000, params);
 
     if (result.error) {
