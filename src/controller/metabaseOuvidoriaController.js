@@ -38,6 +38,24 @@ export const obterDemandasPorFiltros = async (req, res) => {
 
 };
 
+export const obterDetalhesDemanda = async (req, res) => {
+    const { protocolo } = req.body;
+    const params = [
+        {
+            type: "text",
+            value: protocolo,
+            target: ["variable", ["template-tag", "protocolo"]],
+        }
+    ];
+    const result = await consultarCard(3005, params);
+    if (result.error) {
+        return res.status(result.status).json({ error: result.error });
+    }
+    return res.json(
+        JSON.parse(result.data)
+    );
+}
+
 export const obterSetorIdPorSigla = async (req, res) => {
     const { orgao_id, setor_sigla } = req.body;
     const params = [
